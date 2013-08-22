@@ -3,14 +3,28 @@ package main
 import (
 	"fmt"
 	"github.com/tmiller/go-pivotal-tracker-api"
+	"io/ioutil"
 	"os"
 	"strings"
 )
 
-var pivotalTracker pt.Pivotaltracker
+var pivotalTracker pt.PivotalTracker
 
 func main() {
 	initPivotalTracker()
+	printStory()
+}
+
+func printStory() {
+
+	storyId := strings.TrimSpace(os.Args[1])
+
+	if story, err := pivotalTracker.FindStory(storyId); err == nil {
+		fmt.Printf("[#%v] %v\n\nState: %v\n\n%v\n%v\n", story.Id, story.Name, strings.Title(story.CurrentState), story.Description, story.Url)
+	} else {
+		fmt.Println(err)
+		os.Exit(2)
+	}
 }
 
 func initPivotalTracker() {
