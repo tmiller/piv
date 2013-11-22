@@ -12,24 +12,17 @@ import (
 var pivotalTracker pt.PivotalTracker
 
 func main() {
+
 	flag.Parse()
 	initPivotalTracker()
-	printStory()
-}
-
-func printStory() {
 
 	for _, storyId := range flag.Args() {
-
 		if story, err := pivotalTracker.FindStory(storyId); err == nil {
-			fmt.Printf("- %v\n  %v\n\n", story.Name, story.Url)
+			printStory(story)
 		} else {
-			fmt.Println(err)
-			os.Exit(2)
+			printError(err)
 		}
-
 	}
-
 }
 
 func initPivotalTracker() {
@@ -37,10 +30,19 @@ func initPivotalTracker() {
 	configFile, err := ioutil.ReadFile(configFilePath)
 
 	if err != nil {
-		fmt.Printf("Please put your Pivotal Tracker API key in %s\n", configFilePath)
+		printError(err)
 		os.Exit(1)
 	}
 
 	pivotalTrackerApiKey := strings.TrimSpace(string(configFile))
 	pivotalTracker = pt.PivotalTracker{pivotalTrackerApiKey}
+}
+
+func printStory(story pt.Story) {
+	fmt.Printf("- %v\n  %v\n\n", story.Name, story.Url)
+}
+
+func printError(err error) {
+	errorMessage := fmt.Sprintf("%s\n", err.Error())
+	os.Stderr.WriteString(errorMessage)
 }
