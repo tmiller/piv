@@ -20,7 +20,7 @@ func printStory() {
 	storyId := strings.TrimSpace(os.Args[1])
 
 	if story, err := pivotalTracker.FindStory(storyId); err == nil {
-		fmt.Printf("[#%v] %v\n\nState: %v\n\n%v\n%v\n", story.Id, story.Name, strings.Title(story.CurrentState), story.Description, story.Url)
+		fmt.Printf("- %v\n  %v\n\n", story.Name, story.Url)
 	} else {
 		fmt.Println(err)
 		os.Exit(2)
