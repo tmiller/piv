@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/tmiller/go-pivotal-tracker-api"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/tmiller/go-pivotal-tracker-api"
 )
 
 var pivotalTracker pt.PivotalTracker
